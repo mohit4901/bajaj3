@@ -250,7 +250,7 @@ section.is-visible {
 }
 
 .hero-section {
-    background: linear-gradient(to top, var(--gradient-start), var(--gradient-end)), url('https://placehold.co/1920x1080/000/fff?text=Hero+Image') no-repeat center center/cover;
+    background: linear-gradient(to top, var(--gradient-start), var(--gradient-end)), url('./images/main.avif') no-repeat center center/cover;
     min-height: 100vh;
     display: flex;
     align-items: center;
