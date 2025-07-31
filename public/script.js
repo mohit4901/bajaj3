@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
+ocument.addEventListener('DOMContentLoaded', () => {
     // productsContainer is the div where the product grid will be injected
     const productsContainer = document.getElementById('product-list'); 
     // IMPORTANT: REPLACE WITH YOUR WHATSAPP NUMBER (e.g., 919876543210)
-    const whatsappNumber = 'YOUR_WHATSAPP_NUMBER_HERE'; 
+    const whatsappNumber = '9729643803'; 
 
     // Function to fetch products from the backend API
     async function fetchProducts() {
@@ -27,68 +27,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to render products as a static grid of cards (no editing, no images)
-    async function displayProducts(products) {
-        if (!productsContainer) {
-            console.error("Element with ID 'product-list' not found. Cannot display products.");
+    // Function to render products onto the page
+    function renderProducts(products) {
+        if (products.length === 0) {
+            productsContainer.innerHTML = '<p class="no-products">No premium numbers available at the moment. Please check back later!</p>';
             return;
         }
 
-        productsContainer.innerHTML = ''; // Clear previous content or loading message
+        productsContainer.innerHTML = products.map(product => {
+            const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hello! I am interested in the number ${product.number}. Is it still available?`;
+            const buttonText = product.availability === 'Sold Out' ? 'Sold Out' : 'Enquire on WhatsApp';
+            const buttonDisabled = product.availability === 'Sold Out' ? 'disabled' : '';
+            const buttonClass = product.availability === 'Sold Out' ? 'btn-sold-out' : 'btn-whatsapp';
 
-        if (!products || products.length === 0) {
-            productsContainer.innerHTML = '<p class="no-products-message">No vehicle numbers available at the moment. Please check back later!</p>';
-            console.log('Frontend: No products received or products array is empty.');
-            return;
-        }
-
-        // Create product cards and append them to the container
-        products.forEach((product, index) => {
-            const productCard = document.createElement('div');
-            // Add classes for styling and animation
-            productCard.classList.add('product-card', 'card-hover-effect', 'animate-on-scroll', 'fade-in-up');
-            // Add animation delay for staggered effect
-            productCard.style.animationDelay = `${index * 0.1}s`; 
-            
-            // Note: The 'product' object keys (e.g., product.number, product.description)
-            // should match the sanitized headers returned by your server.js (e.g., 'number', 'description', 'cost', 'availability', 'imageurl')
-            // Removed <img> tag
-            productCard.innerHTML = `
-                <div class="product-header">
-                    <h3 class="product-number">${product.number || 'N/A'}</h3>
-                    <p class="product-cost"><i class="fas fa-tag"></i> ${product.cost || 'Price: N/A'}</p>
-                </div>
-                <div class="product-details">
-                    <p class="product-description">${product.description || 'No description available.'}</p>
-                    <p class="product-availability">
-                        <strong>Status:</strong> 
-                        <span class="${product.availability && product.availability.toLowerCase() === 'in stock' ? 'status-instock' : 'status-soldout'}">
-                            <i class="${product.availability && product.availability.toLowerCase() === 'in stock' ? 'fas fa-check-circle' : 'fas fa-times-circle'}"></i> 
-                            ${product.availability || 'N/A'}
-                        </span>
-                    </p>
-                    <a href="https://wa.me/${whatsappNumber}?text=Hello%20Bajaj%20Elite%20Plates,%20I'm%20interested%20in%20the%20number%20${encodeURIComponent(product.number || 'N/A')}" 
-                       target="_blank" class="btn btn-whatsapp product-whatsapp-btn">
-                        <i class="fab fa-whatsapp"></i> Enquire Now
-                    </a>
+            return `
+                <div class="product-card animate-on-scroll">
+                    <img src="${product.imageurl}" alt="Vehicle with number ${product.number}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-header">
+                            <h3 class="product-number">${product.number}</h3>
+                            <span class="product-cost">₹${product.cost.toLocaleString('en-IN')}</span>
+                        </div>
+                        <p class="product-description">${product.description}</p>
+                        <a href="${whatsappLink}" target="_blank" class="btn ${buttonClass}" ${buttonDisabled}>
+                            ${buttonText}
+                        </a>
+                    </div>
                 </div>
             `;
-            productsContainer.appendChild(productCard);
-            observer.observe(productCard);
-        });
-
-        console.log('Frontend: Products rendered as static grid cards (without images).');
+        }).join('');
     }
 
-    // --- Initial page load and setup ---
-    fetchProducts().then(displayProducts);
+    // Call fetch and render functions on page load
+    fetchProducts().then(renderProducts);
 
-    // --- Smooth scrolling for navigation links ---
-    document.querySelectorAll('a.nav-link, .hero-btn, .btn-header').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+    // Update WhatsApp link with the number
+    const whatsappLinkElement = document.getElementById('whatsapp-link');
+    if (whatsappLinkElement) {
+        whatsappLinkElement.href = `https://wa.me/${whatsappNumber}`;
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
             const targetId = this.getAttribute('href');
-            if (targetId && targetId.startsWith('#')) { 
-                e.preventDefault(); 
+            if (targetId !== '#') {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
@@ -138,7 +122,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requestAnimationFrame(animateScroll);
     }
+    
+    // --- Mobile Navigation Toggle ---
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const mainNav = document.querySelector('.main-nav');
+
+    if (hamburgerMenu && mainNav) {
+        hamburgerMenu.addEventListener('click', () => {
+            mainNav.classList.toggle('nav-open');
+        });
+
+        // Close nav when a link is clicked
+        mainNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('nav-open');
+            });
+        });
+    }
+
 });
+
+function copyMessage() {
+    console.log("Attempting to open WhatsApp link. (No text copied to clipboard in this version)");
+}
+
 
 function copyMessage() {
     console.log("Attempting to open WhatsApp link. (No text copied to clipboard in this version)");
