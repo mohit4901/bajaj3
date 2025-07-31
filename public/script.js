@@ -1,4 +1,4 @@
-ocument.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     // productsContainer is the div where the product grid will be injected
     const productsContainer = document.getElementById('product-list'); 
     // IMPORTANT: REPLACE WITH YOUR WHATSAPP NUMBER (e.g., 919876543210)
