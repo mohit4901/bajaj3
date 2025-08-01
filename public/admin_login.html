@@ -14,6 +14,67 @@
             background-color: var(--main-bg-color);
             color: var(--light-text-color);
         }
+        .login-container {
+            background-color: var(--card-bg-color);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .login-container h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-family: var(--heading-font);
+        }
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--alt-bg-color);
+            color: var(--light-text-color);
+            font-size: 1em;
+        }
+        .login-form input[type="text"]:focus,
+        .login-form input[type="password"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .login-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .login-form button:hover {
+            background-color: #c71735;
+            transform: translateY(-2px);
+        }
+        .login-message {
+            margin-top: 20px;
+            color: var(--primary-color); /* Red for error messages */
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -33,15 +94,6 @@
         </form>
     </div>
 
-    <!-- Custom Message Modal -->
-    <div id="message-modal-overlay" class="message-modal-overlay">
-        <div class="message-modal-content">
-            <h3 id="message-modal-title"></h3>
-            <p id="message-modal-text"></p>
-            <button id="message-modal-ok-btn">OK</button>
-        </div>
-    </div>
-
-    <script src="admin.js"></script>
+    <script src="admin.js"></script> <!-- Link to admin-specific JS -->
 </body>
 </html>
