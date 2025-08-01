@@ -369,7 +369,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-
-        fetchProductsForAdmin();
-    }
-});
